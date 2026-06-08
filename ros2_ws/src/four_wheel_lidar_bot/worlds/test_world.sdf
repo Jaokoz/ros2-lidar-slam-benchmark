@@ -1,0 +1,216 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="test_world">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <light type="directional" name="sun">
+      <pose>0 0 10 0 0 0</pose>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- POKOJ: 12 m x 10 m, wysokość ścian 2.5 m -->
+
+    <model name="wall_top">
+      <static>true</static>
+      <pose>0 5.0 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>12.0 0.12 2.5</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>12.0 0.12 2.5</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_bottom_left">
+      <static>true</static>
+      <pose>-3.5 -5.0 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>5.0 0.12 2.5</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>5.0 0.12 2.5</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_bottom_right">
+      <static>true</static>
+      <pose>3.5 -5.0 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>5.0 0.12 2.5</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>5.0 0.12 2.5</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_left">
+      <static>true</static>
+      <pose>-6.0 0 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.12 10.0 2.5</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.12 10.0 2.5</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_right">
+      <static>true</static>
+      <pose>6.0 0 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.12 10.0 2.5</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.12 10.0 2.5</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Szafa -->
+    <model name="wardrobe">
+      <static>true</static>
+      <pose>-4.4 3.2 1.0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>2.0 1.0 2.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>2.0 1.0 2.0</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Regał -->
+    <model name="bookshelf">
+      <static>true</static>
+      <pose>4.3 3.4 0.9 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>1.8 0.7 1.8</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>1.8 0.7 1.8</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Biurko -->
+    <model name="desk">
+      <static>true</static>
+      <pose>3.6 -3.0 0.375 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>2.4 1.2 0.75</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>2.4 1.2 0.75</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Łóżko -->
+    <model name="bed">
+      <static>true</static>
+      <pose>-3.2 -2.6 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>3.2 1.8 0.5</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>3.2 1.8 0.5</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Niska komoda / przeszkoda -->
+    <model name="cabinet">
+      <static>true</static>
+      <pose>0.5 1.8 0.45 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>1.6 0.9 0.9</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>1.6 0.9 0.9</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

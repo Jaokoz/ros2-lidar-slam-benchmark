@@ -1,0 +1,45 @@
+# ROS 2 build artifacts
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# ROS bags and recordings
+*.db3
+*.bag
+*.mcap
+rosbag2_*/
+
+# Large media/results
+*.mp4
+*.avi
+*.mkv
+*.png
+*.jpg
+*.jpeg
+*.tiff
+*.bmp
+
+# Generated results
+wyniki/
+results/
+output/
+exports/
+
+# System/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Archives
+*.zip
+*.tar.gz
+*.7z
+*.rar

@@ -1,0 +1,41 @@
+Odpalanie
+
+python3 /home/jaokoz/ros_scripts/ground_truth_test/align_online_to_slam.py \
+  --video /home/jaokoz/ros_scripts/ground_truth_test/input/nagranie.mp4 \
+  --homography /home/jaokoz/ros_scripts/ground_truth_test/input/homography.json \
+  --marker-id 5 \
+  --dict 5x5_1000 \
+  --out-dir /home/jaokoz/ros_scripts/ground_truth_test/out \
+  --preview \
+  --save-debug-frames \
+  --debug-every-n 1 \
+  --max-debug-frames 100 \
+  --frame-step 1 \
+  --progress-every 50 \
+  --max-jump-m 5.0
+  
+
+Jak uzywa sh:
+
+=====================
+Bierze nagranie.mp4 -> obrabia i wrzuca po nazwie -> rosbag2_real_slam_04 do /home/jaokoz/ros_scripts/wyniki/ground_truth/rosbag2_real_slam_04
+=====================
+
+/home/jaokoz/ros_scripts/process_ground_truth.sh rosbag2_real_slam_04
+
+=====================
+Robi porownanie -> wrzuca do /home/jaokoz/ros_scripts/wyniki/comparison_slam_toolbox/rosbag2_real_slam_04
+=====================
+
+/home/jaokoz/ros_scripts/send_all_results.sh rosbag2_real_slam_04 192.168.0.57
+
+=====================
+Wysyala na strone internetowa
+=====================
+
+/home/jaokoz/ros_scripts/send_all_results.sh rosbag2_real_slam_04 192.168.0.57
+
+
+
+  
+  

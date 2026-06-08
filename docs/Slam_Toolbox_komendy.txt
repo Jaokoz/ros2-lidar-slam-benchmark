@@ -1,0 +1,162 @@
+pkill -f gz
+pkill -f gazebo
+pkill -f sim.launch.py
+pkill -f slam_toolbox
+pkill -f rviz2
+pkill -f ros_gz_bridge
+pkill -f static_transform_publisher
+pkill -f ros2
+
+=======================================================================================================
+Dziala
+=======================================================================================================
+
+
+/home/jaokoz/ros_scripts/start_slam_pipeline.sh
+
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+
+ros2 bag record /scan /odom /tf /tf_static /map /model/four_wheel_bot/pose \
+-o /home/jaokoz/ros2_ws/rosbag2_slam_sim_proba_01
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+
+=======================================================================================================
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 -0.15 8
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.15 8
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+=======================================================================================================
+
+nagranie -> Ctrl+C
+
+/home/jaokoz/ros_scripts/process_latest_slam.sh
+
+=======================================================================================================
+Scenariusze
+=======================================================================================================
+
+# S1 — jazda prostoliniowa wolna
+# Ruch po osi X, od x = 0 do około x = 0.8 m
+# Bezpieczne: nie powinien uderzyć w przeszkody.
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 0.00 8
+
+# S2 — jazda prostoliniowa szybka
+# Ruch po osi X, od x = 0 do około x = 1.5 m
+# Bezpieczne: dalej od komody, łóżka i biurka.
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.30 0.00 5
+
+# S3 — jazda po łuku
+# Ruch po łuku o promieniu R = 0.20 / 0.10 = 2.0 m
+# Przy czasie 15 s robot skręci o około 1.5 rad.
+# Powinno być bezpieczne, ale tor przechodzi dość blisko obszaru komody.
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 15
+
+# S4 — jazda po okręgu, 3 pełne pętle
+# UWAGA: omega dodatnie 0.25 mogłoby prowadzić w stronę komody.
+# Dlatego dajemy omega ujemne: robot będzie jechał po okręgu w dół,
+# w pustszym obszarze świata.
+# R = 0.20 / 0.25 = 0.8 m
+# 1 okrąg ≈ 25 s, 3 okręgi ≈ 75 s
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 -0.25 75
+
+# S5 — łagodny przejazd typu S
+# Bez obrotów w miejscu i bez ciasnych półokręgów
+
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 -0.15 8
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.15 8
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+=======================================================================================================
+=======================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/home/jaokoz/ros_scripts/run_slam_experiment.sh 0.20 0.10 6
+/home/jaokoz/ros_scripts/process_latest_slam.sh
+
+
+/home/jaokoz/ros_scripts/start_slam_pipeline.sh
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+
+
+/home/jaokoz/ros_scripts/start_slam_pipeline.sh
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.0 5
+/home/jaokoz/ros_scripts/process_latest_slam.sh
+
+
+
+
+
+=======================================================================================================
+
+cd ~/ros2_ws
+colcon build
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 launch four_wheel_lidar_bot sim.launch.py
+
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run tf2_ros static_transform_publisher 0.15 0 0.10 0 0 0 base_link four_wheel_bot/base_link/lidar_sensor
+
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /model/four_wheel_bot/pose@geometry_msgs/msg/Pose[gz.msgs.Pose
+
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=/home/jaokoz/ros2_ws/config/slam_toolbox_sim.yaml use_sim_time:=false
+
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.0 5
+
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+rviz2
+
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 bag record /scan /odom /tf /tf_static /map /model/four_wheel_bot/pose
+
+
+source /opt/ros/jazzy/setup.bash
+python3 ~/ros_scripts/extract_one_bag_slam_toolbox.py /home/jaokoz/ros2_ws/rosbag2_2026_03_24-11_44_06
+
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run nav2_map_server map_saver_cli -f /home/jaokoz/ros_scripts/wyniki/slam_toolbox/rosbag2_2026_03_24-12_17_51/map
+
+python3 /home/jaokoz/ros_scripts/send_results_to_rpi.py \
+cartographer \
+/home/jaokoz/ros_scripts/wyniki/slam_toolbox/rosbag2_2026_03_24-12_17_51 \
+192.168.0.57

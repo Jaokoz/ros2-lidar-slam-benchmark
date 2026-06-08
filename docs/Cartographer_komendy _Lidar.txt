@@ -1,0 +1,89 @@
+pkill -f gz
+pkill -f gazebo
+pkill -f sim.launch.py
+pkill -f slam_toolbox
+pkill -f rviz2
+pkill -f ros_gz_bridge
+pkill -f static_transform_publisher
+pkill -f ros2
+pkill -f cmd_vel_to_rpi_http_bridge.py
+pkill -f fake_odom_from_cmd_vel.py
+
+=======================================================================================================
+Dziala
+=======================================================================================================
+cd /home/jaokoz/Python
+python3 test_dziala_server.py
+
+~/ros_scripts/start_real_cartographer_manual.sh
+
+sudo ip route add 192.168.0.57 dev wlp4s0
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+python3 ~/ros_scripts/cmd_vel_to_rpi_http_bridge.py \
+--url http://192.168.0.57:5001/cmd_vel \
+--duration 0.3 \
+--timeout 1.5 \
+--period-factor 1.10
+
+~/ros_scripts/record_real_cartographer.sh rosbag2_real_cartographer_S1
+
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.06 -0.12 12
+
+Ctrl+C
+
+~/ros_scripts/process_real_cartographer.sh rosbag2_real_cartographer_S1
+
+=======================================================================================================
+Nagrywai z telefonu:
+
+python3 align_online_to_slam.py online.csv slam_toolbox.csv
+
+cd ~/ros_scripts/ground_truth_test
+python3 align_online_to_slam.py \
+--video input/nagranie.mp4 \
+--homography input/homography.json \
+--marker-id 5 \
+--dict 5x5_1000 \
+--out-dir ~/ros_scripts/wyniki/ground_truth/rosbag2_real_cartographer_S06 \
+--preview
+
+
+~/ros_scripts/compare_ground_truth_vs_cartographer.sh rosbag2_real_cartographer_S06
+
+~/ros_scripts/send_all_results.sh rosbag2_real_cartographer_S06 192.168.0.57
+
+
+
+
+
+# S1_real — prosta wolna
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.06 0.00 8
+
+# S2_real — prosta szybka
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 0.00 8
+
+# S3_real — średni łuk
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.04 10
+
+# S4_real — mocniejszy łuk
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.08 10
+
+# S5_real — S szybkie
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.00 4
+sleep 2
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.06 8
+sleep 2
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.06 8
+sleep 2
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.00 4
+
+
+
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 -0.15 21
+

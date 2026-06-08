@@ -1,0 +1,500 @@
+pkill -f gz
+pkill -f gazebo
+pkill -f sim.launch.py
+pkill -f slam_toolbox
+pkill -f rviz2
+pkill -f ros_gz_bridge
+pkill -f static_transform_publisher
+pkill -f ros2
+pkill -f cmd_vel_to_rpi_http_bridge.py
+pkill -f fake_odom_from_cmd_vel.py
+
+=======================================================================================================
+Dziala
+=======================================================================================================
+cd /home/jaokoz/Python
+python3 test_dziala_server.py
+
+~/ros_scripts/start_real_slam_toolbox_manual.sh
+
+sudo ip route add 192.168.0.57 dev wlp4s0
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+python3 ~/ros_scripts/cmd_vel_to_rpi_http_bridge.py \
+--url http://192.168.0.57:5001/cmd_vel \
+--duration 0.3 \
+--timeout 1.5 \
+--period-factor 1.10
+
+~/ros_scripts/record_real_slam.sh rosbag2_real_slam_S1
+
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.06 -0.12 12
+
+Ctrl+C
+
+~/ros_scripts/process_real_slam.sh rosbag2_real_slam_1000
+
+=======================================================================================================
+
+Nagrywai z telefonu:
+python3 align_online_to_slam.py online.csv slam_toolbox.csv
+
+cd ~/ros_scripts/ground_truth_test
+python3 align_online_to_slam.py \
+--video input/nagranie.mp4 \
+--homography input/homography.json \
+--marker-id 5 \
+--dict 5x5_1000 \
+--out-dir ~/ros_scripts/wyniki/ground_truth/rosbag2_real_slam_S06 \
+--preview
+
+~/ros_scripts/compare_ground_truth_vs_slam_toolbox.sh rosbag2_real_slam_S06
+
+~/ros_scripts/send_all_results.sh rosbag2_real_slam_S06 192.168.0.57
+
+
+
+
+
+# S1_real — prosta wolna
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.06 0.00 8
+
+# S2_real — prosta szybka
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 0.00 8
+
+# S3_real — średni łuk
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.04 10
+
+# S4_real — mocniejszy łuk
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.08 10
+
+# S5_real — S szybkie
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.00 4
+sleep 2
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.06 8
+sleep 2
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.06 8
+sleep 2
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.00 4
+
+
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 -0.15 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======================================================================================================
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 bag record /scan_fullframe /odom /tf /tf_static /map
+
+
+
+
+
+=======================================================================================================
+
+KOMENDY DO PRACY Z LIDAREM:
+
+nmcli radio wifi off
+sudo ip addr flush dev eno1
+sudo ip addr add 192.168.0.2/24 dev eno1
+sudo ip link set eno1 up
+ping -c 4 192.168.0.1
+
+sudo ip addr flush dev eno1
+nmcli radio wifi on
+ping 192.168.0.57
+
+
+
+
+=======================================================================================================
+
+
+source /opt/ros/jazzy/setup.bash
+python3 ~/ros_scripts/extract_one_bag_slam_toolbox_real.py /home/jaokoz/rosbag2_2026_03_27-16_22_14
+
+
+SLAM TOOLBOX + REALNY LIDAR SICK PICOscan150
+KROK PO KROKU
+
+==================================================
+1. PRACA Z LIDAREM — USTAWIENIE SIECI NA LAPTOPIE
+==================================================
+
+Zakładam:
+- LiDAR ma IP: 192.168.0.1
+- karta Ethernet laptopa to: eno1
+- RPi ma np. IP: 192.168.0.57
+- Wi-Fi laptopa to wlp4s0
+
+UWAGA:
+Jeżeli LiDAR jest na 192.168.0.1, a domowa sieć / RPi też jest w 192.168.0.x,
+to będą konflikty tras.
+Na teraz działamy tak:
+- do pracy z LiDARem używasz Ethernet
+- do wysyłania na stronę wracasz na Wi-Fi
+
+KOMENDY DO PRACY Z LIDAREM:
+
+nmcli radio wifi off
+sudo ip addr flush dev eno1
+sudo ip addr add 192.168.0.2/24 dev eno1
+sudo ip link set eno1 up
+ping -c 4 192.168.0.1
+
+Jeśli ping działa, LiDAR jest widoczny.
+
+==================================================
+2. ODPALENIE LIDARA
+==================================================
+
+Terminal 1:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 launch sick_scan_xd sick_picoscan.launch.py hostname:=192.168.0.1 udp_receiver_ip:=192.168.0.2
+
+==================================================
+3. SPRAWDZENIE CZY LIDAR PUBLIKUJE SKAN
+==================================================
+
+Terminal 2:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 topic list | grep scan
+ros2 topic hz /scan_fullframe
+ros2 topic echo /scan_fullframe --once
+
+Jeżeli leci około 20 Hz, LiDAR działa.
+
+==================================================
+4. ODPALENIE FAKE ODOM
+==================================================
+
+Terminal 3:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+
+To publikuje:
+- /odom
+- TF: odom -> world_1
+
+==================================================
+5. ODPALENIE SLAM TOOLBOX
+==================================================
+
+Terminal 4:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=/home/jaokoz/ros2_ws/config/slam_toolbox_real_cmdvel.yaml use_sim_time:=false
+
+==================================================
+6. ODPALENIE RVIZ
+==================================================
+
+Terminal 5:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+rviz2
+
+USTAWIENIA W RVIZ:
+- Fixed Frame = map
+- Add -> Map -> topic /map
+- Add -> LaserScan -> topic /scan_fullframe
+- opcjonalnie Add -> TF
+
+==================================================
+7. NAGRYWANIE ROSBAGA
+==================================================
+
+Terminal 6:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 bag record /scan_fullframe /odom /tf /tf_static /map -o /home/jaokoz/rosbag2_real_slam_01
+
+UWAGA:
+Zawsze dawaj pełną ścieżkę po -o, żeby bag zapisywał się tam, gdzie chcesz.
+
+==================================================
+8. STEROWANIE Z KONSOLI
+==================================================
+
+Terminal 7:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+
+Przykłady ruchu:
+
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.00 5
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 5
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.00 0.30 3
+
+Znaczenie:
+- pierwszy argument = prędkość liniowa
+- drugi argument = prędkość kątowa
+- trzeci argument = czas w sekundach
+
+==================================================
+9. ZATRZYMANIE NAGRYWANIA
+==================================================
+
+Wracasz do terminala z rosbagiem i wciskasz:
+
+Ctrl+C
+
+==================================================
+10. RĘCZNE PRZETWORZENIE BAGU DO CSV I WYKRESU
+==================================================
+
+Załóżmy, że bag jest tutaj:
+
+/home/jaokoz/rosbag2_real_slam_01
+
+Uruchom:
+
+source /opt/ros/jazzy/setup.bash
+python3 ~/ros_scripts/extract_one_bag_slam_toolbox_real.py /home/jaokoz/rosbag2_real_slam_01
+
+Po tym powinny się pojawić pliki w folderze:
+
+/home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01
+
+Sprawdzenie:
+
+ls -l /home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01
+
+Powinny tam być np.:
+- odom.csv
+- slam_toolbox.csv
+- trajektorie.png
+- trajektorie_surowe.png
+
+==================================================
+11. ZAPIS MAPY I WYSYŁKA NA STRONĘ
+==================================================
+
+Jeśli masz już plik:
+
+~/ros_scripts/process_latest_slam_real.sh
+
+to uruchamiasz:
+
+~/ros_scripts/process_latest_slam_real.sh
+
+Ten skrypt:
+- znajdzie najnowszego rosbaga
+- zapisze mapę
+- zrobi map.png
+- wyśle wszystko na stronę
+
+==================================================
+12. JEŚLI CHCESZ ZAPISAĆ MAPĘ RĘCZNIE
+==================================================
+
+Terminal 1:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+timeout 25s ros2 run nav2_map_server map_saver_cli -f /home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01/map &
+
+Terminal 2:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 bag play /home/jaokoz/rosbag2_real_slam_01
+
+Potem, jeśli chcesz map.png:
+
+~/ros_scripts/start_real_slam_toolbox_manual.sh
+~/ros_scripts/record_real_slam.sh rosbag2_real_slam_01
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 5
+~/ros_scripts/process_real_slam.sh rosbag2_real_slam_01
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+convert /home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01/map.pgm /home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01/map.png
+
+==================================================
+13. RĘCZNA WYSYŁKA NA STRONĘ
+==================================================
+
+Jeżeli nie używasz process_latest_slam_real.sh, możesz wysłać ręcznie tak:
+
+python3 /home/jaokoz/ros_scripts/send_results_to_rpi.py \
+slam_toolbox \
+/home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01 \
+192.168.0.57
+
+==================================================
+14. JAK WRÓCIĆ DO RPI / VNC I WYSŁAĆ DANE NA STRONĘ
+==================================================
+
+Po pracy z LiDARem laptop ma aktywne eno1 = 192.168.0.2/24.
+Jeżeli RPi też siedzi w 192.168.0.x, to trasy się gryzą.
+
+Dlatego po eksperymencie zrób:
+
+sudo ip addr flush dev eno1
+nmcli radio wifi on
+ping 192.168.0.57
+
+Jeżeli ping działa, możesz:
+- połączyć się po VNC do RPi
+- wysłać dane na stronę
+
+Dodatkowy test serwera:
+
+curl http://192.168.0.57:5000/state
+
+Jeżeli dostaniesz JSON, serwer działa.
+
+==================================================
+15. CO ZROBIĆ, JEŚLI LIDAR NIE DZIAŁA
+==================================================
+
+Sprawdzenie połączenia:
+
+ping -c 4 192.168.0.1
+
+Sprawdzenie skanu:
+
+ros2 topic hz /scan_fullframe
+ros2 topic echo /scan_fullframe --once
+
+Jeżeli RViz nic nie pokazuje:
+- Fixed Frame ustaw na map (dla SLAM)
+- albo world_1 (dla samego skanu bez mapy)
+- sprawdź topic /scan_fullframe
+- usuń stare displaye i dodaj LaserScan od nowa
+
+==================================================
+16. DOCZELOWE ROZWIĄZANIE — ZMIANA IP LIDARA
+==================================================
+
+Teraz konflikt bierze się z tego, że:
+- LiDAR ma 192.168.0.1
+- RPi / Wi-Fi też są w 192.168.0.x
+
+Docelowo najlepiej ustawić inną podsieć dla LiDARa, np.:
+
+LiDAR: 192.168.2.1
+Laptop eno1: 192.168.2.2
+
+Wtedy:
+- LiDAR działa po Ethernecie
+- RPi działa po Wi-Fi
+- i nie ma konfliktu tras
+
+Domyślny adres picoScan150 to 192.168.0.1. Zmianę IP najlepiej robić przez interfejs webowy urządzenia / panel SICK; dla nowszych firmware zmiana może być ograniczona i wymagać logowania lub być możliwa tylko krótko po starcie urządzenia. Trzeba to robić zgodnie z instrukcją i polityką urządzenia. :contentReference[oaicite:0]{index=0}
+
+Gdy już zmienisz LiDAR np. na 192.168.2.1, wtedy na laptopie ustawiasz:
+
+nmcli radio wifi off
+sudo ip addr flush dev eno1
+sudo ip addr add 192.168.2.2/24 dev eno1
+sudo ip link set eno1 up
+ping -c 4 192.168.2.1
+
+A driver odpalasz tak:
+
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 launch sick_scan_xd sick_picoscan.launch.py hostname:=192.168.2.1 udp_receiver_ip:=192.168.2.2
+
+Wtedy RPi może zostać normalnie np. na 192.168.0.57 po Wi-Fi.
+
+==================================================
+17. NAJKRÓTSZA LISTA STARTU
+==================================================
+
+1. sieć LiDAR:
+nmcli radio wifi off
+sudo ip addr flush dev eno1
+sudo ip addr add 192.168.0.2/24 dev eno1
+sudo ip link set eno1 up
+ping -c 4 192.168.0.1
+
+2. LiDAR:
+ros2 launch sick_scan_xd sick_picoscan.launch.py hostname:=192.168.0.1 udp_receiver_ip:=192.168.0.2
+
+3. fake odom:
+python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+
+4. slam_toolbox:
+ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=/home/jaokoz/ros2_ws/config/slam_toolbox_real_cmdvel.yaml use_sim_time:=false
+
+5. RViz:
+rviz2
+
+6. nagrywanie:
+ros2 bag record /scan_fullframe /odom /tf /tf_static /map -o /home/jaokoz/rosbag2_real_slam_01
+
+7. ruch:
+python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 5
+
+8. stop bag:
+Ctrl+C
+
+9. CSV + wykres:
+python3 ~/ros_scripts/extract_one_bag_slam_toolbox_real.py /home/jaokoz/rosbag2_real_slam_01
+
+10. mapa + wysyłka:
+~/ros_scripts/process_latest_slam_real.sh
+
+==================================================
+KONIEC
+==================================================
+
+
+
+
+
+
+
+
+
+
