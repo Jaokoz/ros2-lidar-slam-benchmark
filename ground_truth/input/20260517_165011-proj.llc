@@ -1,0 +1,48 @@
+{
+  version: 2,
+  mediaFileName: '20260517_165011.mp4',
+  cutSegments: [
+    {
+      start: 170.284724,
+      end: 190.549564,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 320.168878,
+      end: 336.103856,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 491.269763,
+      end: 512.527386,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 653.768088,
+      end: 680.709094,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 889.252208,
+      end: 934.467987,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 1169.173752,
+      end: 1204.7839148393355,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 1362.5266526406233,
+      end: 1397.683533943916,
+      name: '',
+      selected: true,
+    },
+  ],
+}

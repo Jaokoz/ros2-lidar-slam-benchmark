@@ -1,0 +1,36 @@
+{
+  version: 2,
+  mediaFileName: '20260517_162354.mp4',
+  cutSegments: [
+    {
+      start: 148.377427,
+      end: 172.326581,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 314.864819,
+      end: 334.722079,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 469.9916278888941,
+      end: 497.30076369889406,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 903.8303346537767,
+      end: 930.4927968346057,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 1296.365993909391,
+      end: 1343.866753445891,
+      name: '',
+      selected: true,
+    },
+  ],
+}

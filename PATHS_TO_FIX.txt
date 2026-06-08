@@ -1,0 +1,293 @@
+scripts/recording/record_real_cartographer.sh:    echo "Użycie: ~/ros_scripts/record_real_cartographer.sh nazwa_baga"
+scripts/recording/record_real_cartographer.sh:    echo "Przykład: ~/ros_scripts/record_real_cartographer.sh rosbag2_real_cartographer_01"
+scripts/recording/record_real_cartographer.sh:source ~/ros2_ws/install/setup.bash
+scripts/recording/record_real_slam.sh:    echo "Użycie: ~/ros_scripts/record_real_slam.sh nazwa_baga"
+scripts/recording/record_real_slam.sh:    echo "Przykład: ~/ros_scripts/record_real_slam.sh rosbag2_real_slam_01"
+scripts/recording/record_real_slam.sh:source ~/ros2_ws/install/setup.bash
+scripts/processing/process_real_cartographer.sh:    echo "Użycie: ~/ros_scripts/process_real_cartographer.sh nazwa_baga"
+scripts/processing/process_real_cartographer.sh:    echo "Przykład: ~/ros_scripts/process_real_cartographer.sh rosbag2_real_cartographer_01"
+scripts/processing/process_real_cartographer.sh:RESULT_DIR="$HOME/ros_scripts/wyniki/cartographer_real/$BAG_NAME"
+scripts/processing/process_real_cartographer.sh:source ~/ros2_ws/install/setup.bash
+scripts/processing/process_real_cartographer.sh:python3 ~/ros_scripts/extract_one_bag_cartographer_real.py "$BAG_PATH"
+scripts/processing/process_real_cartographer.sh:python3 ~/ros_scripts/send_results_to_rpi.py \
+scripts/processing/process_latest_slam.sh:WS="$HOME/ros2_ws"
+scripts/processing/process_latest_slam.sh:RESULT_BASE="$HOME/ros_scripts/wyniki/slam_toolbox"
+scripts/processing/process_latest_slam.sh:python3 "$HOME/ros_scripts/extract_one_bag_slam_toolbox.py" "$BAG_PATH"
+scripts/processing/process_latest_slam.sh:python3 "$HOME/ros_scripts/send_results_to_rpi.py" \
+scripts/processing/process_real_slam.sh:    echo "Użycie: ~/ros_scripts/process_real_slam.sh nazwa_baga"
+scripts/processing/process_real_slam.sh:    echo "Przykład: ~/ros_scripts/process_real_slam.sh rosbag2_real_slam_01"
+scripts/processing/process_real_slam.sh:RESULT_DIR="$HOME/ros_scripts/wyniki/slam_toolbox_real/$BAG_NAME"
+scripts/processing/process_real_slam.sh:source ~/ros2_ws/install/setup.bash
+scripts/processing/process_real_slam.sh:python3 ~/ros_scripts/extract_one_bag_slam_toolbox_real.py "$BAG_PATH"
+scripts/processing/process_real_slam.sh:python3 ~/ros_scripts/send_results_to_rpi.py \
+scripts/processing/process_latest_cartographer.sh:WS="$HOME/ros2_ws"
+scripts/processing/process_latest_cartographer.sh:RESULT_BASE="$HOME/ros_scripts/wyniki/cartographer"
+scripts/processing/process_latest_cartographer.sh:python3 "$HOME/ros_scripts/extract_one_bag_cartographer.py" "$LATEST_BAG"
+scripts/processing/process_latest_cartographer.sh:python3 "$HOME/ros_scripts/send_results_to_rpi.py" \
+scripts/processing/extract_one_bag_slam_toolbox_real.py:    output_dir = os.path.join("/home/jaokoz/ros_scripts/wyniki/slam_toolbox_real", bag_name)
+scripts/processing/extract_one_bag_cartographer_real.py:    output_dir = os.path.join("/home/jaokoz/ros_scripts/wyniki/cartographer_real", bag_name)
+scripts/processing/extract_one_bag_slam_toolbox.py:        print("python3 extract_one_bag_slam_toolbox.py /home/jaokoz/ros2_ws/rosbag2_xxx")
+scripts/processing/extract_one_bag_slam_toolbox.py:    base_output_dir = "/home/jaokoz/ros_scripts/wyniki/slam_toolbox"
+scripts/processing/process_ground_truth.sh:VIDEO="/home/jaokoz/ros_scripts/ground_truth_test/input/nagranie.mp4"
+scripts/processing/process_ground_truth.sh:HOMOGRAPHY="/home/jaokoz/ros_scripts/ground_truth_test/input/homography.json"
+scripts/processing/process_ground_truth.sh:SCRIPT="/home/jaokoz/ros_scripts/ground_truth_test/align_online_to_slam.py"
+scripts/processing/process_ground_truth.sh:OUT_DIR="/home/jaokoz/ros_scripts/wyniki/ground_truth/${RUN_NAME}"
+scripts/processing/extract_one_bag_cartographer.py:        print("python3 extract_one_bag_cartographer.py /home/jaokoz/ros2_ws/rosbag2_xxx")
+scripts/processing/extract_one_bag_cartographer.py:    base_output_dir = "/home/jaokoz/ros_scripts/wyniki/cartographer"
+scripts/experiments/run_cartographer_experiment.sh:WS=~/ros2_ws
+scripts/experiments/run_cartographer_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_cartographer_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_cartographer_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_cartographer_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_cartographer_experiment.sh:  -configuration_directory /home/jaokoz/ros2_ws/config/cartographer \
+scripts/experiments/run_cartographer_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_cartographer_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_cartographer_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_cartographer_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_cartographer_experiment.sh:python3 ~/ros_scripts/cmd_vel_for_time.py ${V} ${OMEGA} ${MOVE_TIME}
+scripts/experiments/start_slam_pipeline.sh:WS=~/ros2_ws
+scripts/experiments/start_slam_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_slam_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_slam_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_slam_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_slam_pipeline.sh:ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=/home/jaokoz/ros2_ws/config/slam_toolbox_sim.yaml use_sim_time:=false
+scripts/experiments/start_slam_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_slam_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_slam_pipeline.sh:echo 'Odpal ruch np.: python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.0 5'
+scripts/experiments/start_slam_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_cartographer_pipeline.sh:WS=~/ros2_ws
+scripts/experiments/start_cartographer_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_cartographer_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_cartographer_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_cartographer_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_cartographer_pipeline.sh:  -configuration_directory /home/jaokoz/ros2_ws/config/cartographer \
+scripts/experiments/start_cartographer_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_cartographer_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_cartographer_pipeline.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/start_real_cartographer_manual.sh:WS="$HOME/ros2_ws"
+scripts/experiments/start_real_cartographer_manual.sh:python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+scripts/experiments/start_real_cartographer_manual.sh:  -configuration_directory $HOME/ros2_ws/config/cartographer \
+scripts/experiments/start_real_cartographer_manual.sh:echo 'python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.00 5'
+scripts/experiments/start_real_cartographer_manual.sh:echo 'python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 5'
+scripts/experiments/start_real_cartographer_manual.sh:echo 'python3 ~/ros_scripts/cmd_vel_for_time.py 0.00 0.30 3'
+scripts/experiments/start_real_slam_toolbox_manual.sh:WS="$HOME/ros2_ws"
+scripts/experiments/start_real_slam_toolbox_manual.sh:SLAM_PARAMS="$HOME/ros2_ws/config/slam_toolbox_real_cmdvel.yaml"
+scripts/experiments/start_real_slam_toolbox_manual.sh:python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+scripts/experiments/start_real_slam_toolbox_manual.sh:echo 'python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.00 5'
+scripts/experiments/start_real_slam_toolbox_manual.sh:echo 'python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 5'
+scripts/experiments/start_real_slam_toolbox_manual.sh:echo 'python3 ~/ros_scripts/cmd_vel_for_time.py 0.00 0.30 3'
+scripts/experiments/run_slam_experiment.sh:WS=~/ros2_ws
+scripts/experiments/run_slam_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_slam_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_slam_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_slam_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_slam_experiment.sh:ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=/home/jaokoz/ros2_ws/config/slam_toolbox_sim.yaml use_sim_time:=false
+scripts/experiments/run_slam_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_slam_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_slam_experiment.sh:source ~/ros2_ws/install/setup.bash
+scripts/experiments/run_slam_experiment.sh:python3 ~/ros_scripts/cmd_vel_for_time.py ${V} ${OMEGA} ${MOVE_TIME}
+scripts/analysis/compare_ground_truth_vs_slam_toolbox.sh:SCRIPT="/home/jaokoz/ros_scripts/compare_ground_truth_vs_slam.py"
+scripts/analysis/compare_ground_truth_vs_slam_toolbox.sh:GT_CSV="/home/jaokoz/ros_scripts/wyniki/ground_truth/${RUN_NAME}/ground_truth_raw.csv"
+scripts/analysis/compare_ground_truth_vs_slam_toolbox.sh:SLAM_DIR="/home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/${RUN_NAME}"
+scripts/analysis/compare_ground_truth_vs_slam_toolbox.sh:OUT_DIR="/home/jaokoz/ros_scripts/wyniki/comparison_slam_toolbox/${RUN_NAME}"
+scripts/analysis/compare_ground_truth_vs_cartographer.sh:SCRIPT="/home/jaokoz/ros_scripts/compare_ground_truth_vs_slam.py"
+scripts/analysis/compare_ground_truth_vs_cartographer.sh:GT_CSV="/home/jaokoz/ros_scripts/wyniki/ground_truth/${RUN_NAME}/ground_truth_raw.csv"
+scripts/analysis/compare_ground_truth_vs_cartographer.sh:SLAM_DIR="/home/jaokoz/ros_scripts/wyniki/cartographer_real/${RUN_NAME}"
+scripts/analysis/compare_ground_truth_vs_cartographer.sh:OUT_DIR="/home/jaokoz/ros_scripts/wyniki/comparison_cartographer/${RUN_NAME}"
+scripts/rpi_transfer/send_all_results.sh:SEND_SCRIPT="/home/jaokoz/ros_scripts/send_results_to_rpi.py"
+scripts/rpi_transfer/send_all_results.sh:CARTO_DIR="/home/jaokoz/ros_scripts/wyniki/cartographer_real/${RUN_NAME}"
+scripts/rpi_transfer/send_all_results.sh:SLAM_DIR="/home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/${RUN_NAME}"
+scripts/rpi_transfer/send_all_results.sh:GT_DIR="/home/jaokoz/ros_scripts/wyniki/ground_truth/${RUN_NAME}"
+scripts/rpi_transfer/send_all_results.sh:CMP_CARTO_DIR="/home/jaokoz/ros_scripts/wyniki/comparison_cartographer/${RUN_NAME}"
+scripts/rpi_transfer/send_all_results.sh:CMP_SLAM_DIR="/home/jaokoz/ros_scripts/wyniki/comparison_slam_toolbox/${RUN_NAME}"
+docs/Cartographer_komendy _Lidar.txt:cd /home/jaokoz/Python
+docs/Cartographer_komendy _Lidar.txt:~/ros_scripts/start_real_cartographer_manual.sh
+docs/Cartographer_komendy _Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+docs/Cartographer_komendy _Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_to_rpi_http_bridge.py \
+docs/Cartographer_komendy _Lidar.txt:~/ros_scripts/record_real_cartographer.sh rosbag2_real_cartographer_S1
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.06 -0.12 12
+docs/Cartographer_komendy _Lidar.txt:~/ros_scripts/process_real_cartographer.sh rosbag2_real_cartographer_S1
+docs/Cartographer_komendy _Lidar.txt:cd ~/ros_scripts/ground_truth_test
+docs/Cartographer_komendy _Lidar.txt:--out-dir ~/ros_scripts/wyniki/ground_truth/rosbag2_real_cartographer_S06 \
+docs/Cartographer_komendy _Lidar.txt:~/ros_scripts/compare_ground_truth_vs_cartographer.sh rosbag2_real_cartographer_S06
+docs/Cartographer_komendy _Lidar.txt:~/ros_scripts/send_all_results.sh rosbag2_real_cartographer_S06 192.168.0.57
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.06 0.00 8
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 0.00 8
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.04 10
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.08 10
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.00 4
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.06 8
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.06 8
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.00 4
+docs/Cartographer_komendy _Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 -0.15 21
+docs/Slam_Toolbox_komendy.txt:/home/jaokoz/ros_scripts/start_slam_pipeline.sh
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:-o /home/jaokoz/ros2_ws/rosbag2_slam_sim_proba_01
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 -0.15 8
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.15 8
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+docs/Slam_Toolbox_komendy.txt:/home/jaokoz/ros_scripts/process_latest_slam.sh
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 0.00 8
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.30 0.00 5
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 15
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 -0.25 75
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 -0.15 8
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.15 8
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+docs/Slam_Toolbox_komendy.txt:/home/jaokoz/ros_scripts/run_slam_experiment.sh 0.20 0.10 6
+docs/Slam_Toolbox_komendy.txt:/home/jaokoz/ros_scripts/process_latest_slam.sh
+docs/Slam_Toolbox_komendy.txt:/home/jaokoz/ros_scripts/start_slam_pipeline.sh
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:/home/jaokoz/ros_scripts/start_slam_pipeline.sh
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.0 5
+docs/Slam_Toolbox_komendy.txt:/home/jaokoz/ros_scripts/process_latest_slam.sh
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=/home/jaokoz/ros2_ws/config/slam_toolbox_sim.yaml use_sim_time:=false
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.0 5
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:python3 ~/ros_scripts/extract_one_bag_slam_toolbox.py /home/jaokoz/ros2_ws/rosbag2_2026_03_24-11_44_06
+docs/Slam_Toolbox_komendy.txt:cd ~/ros2_ws
+docs/Slam_Toolbox_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_komendy.txt:ros2 run nav2_map_server map_saver_cli -f /home/jaokoz/ros_scripts/wyniki/slam_toolbox/rosbag2_2026_03_24-12_17_51/map
+docs/Slam_Toolbox_komendy.txt:python3 /home/jaokoz/ros_scripts/send_results_to_rpi.py \
+docs/Slam_Toolbox_komendy.txt:/home/jaokoz/ros_scripts/wyniki/slam_toolbox/rosbag2_2026_03_24-12_17_51 \
+docs/Slam_Toolbox_Lidar.txt:cd /home/jaokoz/Python
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/start_real_slam_toolbox_manual.sh
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_to_rpi_http_bridge.py \
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/record_real_slam.sh rosbag2_real_slam_S1
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.06 -0.12 12
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/process_real_slam.sh rosbag2_real_slam_1000
+docs/Slam_Toolbox_Lidar.txt:cd ~/ros_scripts/ground_truth_test
+docs/Slam_Toolbox_Lidar.txt:--out-dir ~/ros_scripts/wyniki/ground_truth/rosbag2_real_slam_S06 \
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/compare_ground_truth_vs_slam_toolbox.sh rosbag2_real_slam_S06
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/send_all_results.sh rosbag2_real_slam_S06 192.168.0.57
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.06 0.00 8
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 0.00 8
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.04 10
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.08 10
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.00 4
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 -0.06 8
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.06 8
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.08 0.00 4
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 -0.15 21
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/extract_one_bag_slam_toolbox_real.py /home/jaokoz/rosbag2_2026_03_27-16_22_14
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=/home/jaokoz/ros2_ws/config/slam_toolbox_real_cmdvel.yaml use_sim_time:=false
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:ros2 bag record /scan_fullframe /odom /tf /tf_static /map -o /home/jaokoz/rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.00 5
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 5
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.00 0.30 3
+docs/Slam_Toolbox_Lidar.txt:/home/jaokoz/rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/extract_one_bag_slam_toolbox_real.py /home/jaokoz/rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:/home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:ls -l /home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/process_latest_slam_real.sh
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/process_latest_slam_real.sh
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:timeout 25s ros2 run nav2_map_server map_saver_cli -f /home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01/map &
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:ros2 bag play /home/jaokoz/rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/start_real_slam_toolbox_manual.sh
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/record_real_slam.sh rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 5
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/process_real_slam.sh rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:convert /home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01/map.pgm /home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01/map.png
+docs/Slam_Toolbox_Lidar.txt:python3 /home/jaokoz/ros_scripts/send_results_to_rpi.py \
+docs/Slam_Toolbox_Lidar.txt:/home/jaokoz/ros_scripts/wyniki/slam_toolbox_real/rosbag2_real_slam_01 \
+docs/Slam_Toolbox_Lidar.txt:source ~/ros2_ws/install/setup.bash
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+docs/Slam_Toolbox_Lidar.txt:ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=/home/jaokoz/ros2_ws/config/slam_toolbox_real_cmdvel.yaml use_sim_time:=false
+docs/Slam_Toolbox_Lidar.txt:ros2 bag record /scan_fullframe /odom /tf /tf_static /map -o /home/jaokoz/rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 5
+docs/Slam_Toolbox_Lidar.txt:python3 ~/ros_scripts/extract_one_bag_slam_toolbox_real.py /home/jaokoz/rosbag2_real_slam_01
+docs/Slam_Toolbox_Lidar.txt:~/ros_scripts/process_latest_slam_real.sh
+docs/Ground_true_real.txt:python3 /home/jaokoz/ros_scripts/ground_truth_test/align_online_to_slam.py \
+docs/Ground_true_real.txt:  --video /home/jaokoz/ros_scripts/ground_truth_test/input/nagranie.mp4 \
+docs/Ground_true_real.txt:  --homography /home/jaokoz/ros_scripts/ground_truth_test/input/homography.json \
+docs/Ground_true_real.txt:  --out-dir /home/jaokoz/ros_scripts/ground_truth_test/out \
+docs/Ground_true_real.txt:Bierze nagranie.mp4 -> obrabia i wrzuca po nazwie -> rosbag2_real_slam_04 do /home/jaokoz/ros_scripts/wyniki/ground_truth/rosbag2_real_slam_04
+docs/Ground_true_real.txt:/home/jaokoz/ros_scripts/process_ground_truth.sh rosbag2_real_slam_04
+docs/Ground_true_real.txt:Robi porownanie -> wrzuca do /home/jaokoz/ros_scripts/wyniki/comparison_slam_toolbox/rosbag2_real_slam_04
+docs/Ground_true_real.txt:/home/jaokoz/ros_scripts/send_all_results.sh rosbag2_real_slam_04 192.168.0.57
+docs/Ground_true_real.txt:/home/jaokoz/ros_scripts/send_all_results.sh rosbag2_real_slam_04 192.168.0.57
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/fake_odom_from_cmd_vel.py
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_to_rpi_http_bridge.py --url http://192.168.0.57:5001/cmd_vel
+docs/Cartographer_komendy.txt:/home/jaokoz/ros_scripts/start_cartographer_pipeline.sh
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:  -o /home/jaokoz/ros2_ws/rosbag2_cartografer_sim_proba_011
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 -0.15 8
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.15 8
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+docs/Cartographer_komendy.txt:/home/jaokoz/ros_scripts/process_latest_cartographer.sh
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.10 0.00 8
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.30 0.00 5
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.10 15
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 -0.25 75
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 -0.15 8
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.15 8
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.15 0.00 4
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:  -configuration_directory /home/jaokoz/ros2_ws/config/cartographer \
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/cmd_vel_for_time.py 0.20 0.0 5
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:python3 ~/ros_scripts/extract_one_bag_cartographer.py /home/jaokoz/ros2_ws/rosbag2_2026_03_24-12_17_51
+docs/Cartographer_komendy.txt:cd ~/ros2_ws
+docs/Cartographer_komendy.txt:source ~/ros2_ws/install/setup.bash
+docs/Cartographer_komendy.txt:ros2 run nav2_map_server map_saver_cli -f /home/jaokoz/ros_scripts/wyniki/cartographer/rosbag2_2026_03_24-12_17_51/map
+docs/Cartographer_komendy.txt:python3 /home/jaokoz/ros_scripts/send_results_to_rpi.py \
+docs/Cartographer_komendy.txt:/home/jaokoz/ros_scripts/wyniki/cartographer/rosbag2_2026_03_24-12_17_51 \
+matlab/M_Lidar.m:bagPath = "/home/jaokoz/ros2_ws/rosbag2_cartografer_sim_proba_1000";
+matlab/M_Lidar.m:outDir = "/home/jaokoz/ros_scripts/wyniki/rosbag2_cartografer_sim_proba_1000";
